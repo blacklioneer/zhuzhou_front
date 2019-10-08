@@ -1,0 +1,40 @@
+@import '~antd/lib/style/themes/default.less';
+
+.standardTable {
+  :global {
+    .ant-table-pagination {
+      margin-top: 24px;
+    }
+  }
+
+  .tableAlert {
+    margin-bottom: 16px;
+  }
+}
+.tablefont {
+  height:299px;
+  :global{
+    .ant-table-thead {
+      > tr > th {
+        padding: 0;
+        color:@text-color-dark;
+        font-size: 16px;
+        text-align:center;
+        background-color: #434e59;
+      }
+    }
+
+    .ant-table-tbody > tr > td {
+      padding: 0;
+      font-size: 16px;
+      text-align:center;
+      color:  @text-color-secondary-dark;
+      background-color: #434e59;
+    }
+    .ant-table-pagination.ant-pagination{
+      margin: 0;
+    }
+  }
+
+}
+

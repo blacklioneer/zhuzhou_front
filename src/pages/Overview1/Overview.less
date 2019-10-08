@@ -1,0 +1,172 @@
+@import '~antd/lib/style/themes/default.less';
+@import '~@/utils/utils.less';
+
+
+.maincard{
+  background-color:#314659;
+  :global{
+    .ant-card-body{
+      padding:24px;
+    }
+    .ant-card-head{
+      min-height:24px;
+      .ant-card-head-title{
+      padding: 0;
+    }
+    }
+  }
+}
+.maincard_right{
+  background-color:#314659;
+  :global{
+    .ant-card-body{
+      padding:58.5px 24px;
+    }
+    .ant-card-head{
+      min-height:24px;
+      .ant-card-head-title{
+        padding: 0;
+      }
+    }
+  }
+}
+
+.seconderycard{
+  background-color: #434e59;
+  :global{
+    .ant-card-head{
+      margin:0;
+      border:0;
+      }
+  }
+}
+
+.textprimarycolor{
+  margin-bottom: 0;
+  color: @text-color-dark;
+  font-size: 16px;
+  text-align:center;
+}
+.textseconderycolor{
+  color: @text-color-secondary-dark;
+  font-size: @font-size-sm;
+  text-align:center;
+}
+.statustextprimary{
+  margin-bottom: 0;
+  color: @text-color-dark;
+  font-size: 25px;
+  text-align:center;
+}
+.statustextsecondery_run{
+  margin-bottom: 0;
+  color: @text-color-secondary-dark;
+  font-size: 16px;
+  text-align:center;
+  background-color: forestgreen;
+}
+.statustextsecondery_pause{
+  margin-bottom: 0;
+  color: @text-color-secondary;
+  font-size: 16px;
+  text-align:center;
+  background-color: yellow;
+}
+.statustextsecondery_error{
+  margin-bottom: 0;
+  color: @text-color-secondary-dark;
+  font-size: 16px;
+  text-align:center;
+  background-color: red;
+}
+.statustextsecondery_offline{
+  margin-bottom: 0;
+  color: @text-color-secondary-dark;
+  font-size: 16px;
+  text-align:center;
+  background-color: gray;
+}
+.backgroundpic{
+  width:100px;
+  height:100px;
+  background-color:#314659;
+  //
+  //background-image: url('../../assets/productlinelayout.png');
+  //background-size: 582px*596px;
+}
+
+.border{
+  border-width: 1px;
+  border-style: solid;
+  border-color: #fff;
+}
+.layouttitle{
+  margin-bottom: 0;
+  color: @text-color-dark;
+  font-size: 30px;
+  text-align:center;
+}
+.layoutbody{
+  background-color:#314659;
+  :global{
+    .ant-card-body{
+      padding: 0 24px;
+    }
+    .ant-card-head{
+      min-height:24px;
+      .ant-card-head-title{
+        padding: 0;
+      }
+    }
+  }
+}
+.layoutcard{
+  background-color:#314659;
+  :global{
+    .ant-card-body{
+      padding:12px;
+    }
+  }
+}
+.intend{
+  background-color:#434e59;
+  :global{
+    .ant-card-body{
+      padding:0;
+    }
+  }
+}
+.footer{
+  padding-top: 40px;
+}
+.intendmiddle{
+  margin-top: 30px;
+  background-color:#434e59;
+  :global{
+    .ant-card-body{
+      padding:0;
+    }
+  }
+}
+
+.textsecondery_run{
+  margin-bottom: 0;
+  color: @text-color-dark;
+  font-size: 16px;
+  text-align:center;
+  background-color: forestgreen;
+}
+.textsecondery_pause{
+  margin-bottom: 0;
+  color: @text-color;
+  font-size: 16px;
+  text-align:center;
+  background-color: yellow;
+}
+.textsecondery_error{
+  margin-bottom: 0;
+  color: @text-color-dark;
+  font-size: 16px;
+  text-align:center;
+  background-color: red;
+}
