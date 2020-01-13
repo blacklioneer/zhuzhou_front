@@ -38,7 +38,8 @@ const getValue = obj =>
 const statusMap = ['error', 'success','warning'];
 const status = ['异常未解决', '已解决','预警未解决' ];
 const type1 = ['异常信息','预警信息'];
-const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+// const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
 const run= [false,true,false];
 const CreateForm = Form.create()(props => {
 
@@ -64,19 +65,19 @@ const CreateForm = Form.create()(props => {
             <Option value="1">KD-33</Option>
             <Option value="2">KD-34</Option>
             <Option value="3">KD-35</Option>
-            <Option value="4">KD-36</Option>
+            {/* <Option value="4">KD-36</Option>
             <Option value="5">KD-37</Option>
             <Option value="6">KD-38</Option>
             <Option value="7">KD-39</Option>
-            <Option value="8">KD-40</Option>
-            <Option value="9">BP-11</Option>
-            <Option value="10">BP-12</Option>
-            <Option value="11">BP-13</Option>
-            <Option value="12">BP-14</Option>
+            <Option value="8">KD-40</Option> */}
+            <Option value="4">BP-11</Option>
+            <Option value="5">BP-12</Option>
+            <Option value="6">BP-13</Option>
+{/*            <Option value="12">BP-14</Option>
             <Option value="13">BP-15</Option>
             <Option value="14">BP-16</Option>
             <Option value="15">BP-17</Option>
-            <Option value="16">BP-18</Option>
+            <Option value="16">BP-18</Option>  */}
           </Select>
         )}
       </FormItem>
@@ -234,6 +235,7 @@ class TableList extends PureComponent {
       title: '异常时间',
       dataIndex: 'error',
       sorter:true,
+      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     // {
     //   title: '累计登录次数',

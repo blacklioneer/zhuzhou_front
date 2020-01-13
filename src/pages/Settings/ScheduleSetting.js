@@ -15,6 +15,7 @@ import {
   Menu,
   Divider,
   InputNumber,
+  Slider,
   DatePicker,
   Modal,
   message,
@@ -40,7 +41,8 @@ const getValue = obj =>
     .join(',');
 const statusMap = ['default', 'success',];
 const status = ['未加工', '正在加工', ];
-const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+// const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
 const run = [false,true];
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
@@ -87,6 +89,7 @@ class UpdateForm extends PureComponent {
         ordernum: props.values.ordernum,
         date:props.values.date,
         unqualified:props.values.unqualified,
+        technologytime:props.values.technologytime,
       },
       currentStep: 0,
     };
@@ -108,7 +111,7 @@ class UpdateForm extends PureComponent {
           formVals,
         },
         () => {
-          if (currentStep < 2) {
+          if (currentStep < 3) {
             this.forward();
           } else {
             handleUpdate(formVals);
@@ -137,26 +140,26 @@ class UpdateForm extends PureComponent {
     if (currentStep === 1) {
       return [
         <FormItem key="eid" {...this.formLayout} label="加工设备">
-          {form.getFieldDecorator('ename', {
+          {form.getFieldDecorator('eid', {
             initialValue: eid[formVals.eid],
           })(
             <Select style={{ width: '100%' }}>
               <Option value="1">KD-33</Option>
               <Option value="2">KD-34</Option>
               <Option value="3">KD-35</Option>
-              <Option value="4">KD-36</Option>
-              <Option value="5">KD-37</Option>
-              <Option value="6">KD-38</Option>
-              <Option value="7">KD-39</Option>
-              <Option value="8">KD-40</Option>
-              <Option value="9">BP-11</Option>
-              <Option value="10">BP-12</Option>
-              <Option value="11">BP-13</Option>
-              <Option value="12">BP-14</Option>
-              <Option value="13">BP-15</Option>
-              <Option value="14">BP-16</Option>
-              <Option value="15">BP-17</Option>
-              <Option value="16">BP-18</Option>
+              {/* <Option value="4">KD-36</Option>
+            <Option value="5">KD-37</Option>
+            <Option value="6">KD-38</Option>
+            <Option value="7">KD-39</Option>
+            <Option value="8">KD-40</Option> */}
+              <Option value="4">BP-11</Option>
+              <Option value="5">BP-12</Option>
+              <Option value="6">BP-13</Option>
+              {/*            <Option value="12">BP-14</Option>
+            <Option value="13">BP-15</Option>
+            <Option value="14">BP-16</Option>
+            <Option value="15">BP-17</Option>
+            <Option value="16">BP-18</Option>  */}
             </Select>
           )}
         </FormItem>,
@@ -172,6 +175,47 @@ class UpdateForm extends PureComponent {
               format="YYYY-MM-DD"
               placeholder="选择加工时间(不输入保留原时间)"
             />
+          )}
+        </FormItem>,
+      ];
+    }
+    if (currentStep === 3) {
+      return [
+        <FormItem key="technologytime_m" {...this.formLayout} label="分钟">
+          {form.getFieldDecorator('technologytime_m')(
+            <Row>
+{/*              <Col span={12}>
+                <Slider
+                  min={0}
+                  max={60}
+                />
+              </Col> */}
+              <Col span={12}>
+                <InputNumber
+                  min={0}
+                  style={{ marginLeft: 16 }}
+                />
+              </Col>
+            </Row>
+          )}
+        </FormItem>,
+        <FormItem key="technologytime_s" {...this.formLayout} label="秒">
+          {form.getFieldDecorator('technologytime_s')(
+            <Row>
+              {/* <Col span={12}>
+                <Slider
+                  min={0}
+                  max={60}
+                />
+              </Col> */}
+              <Col span={12}>
+                <InputNumber
+                  min={0}
+                  max={60}
+                  style={{ marginLeft: 16 }}
+                />
+              </Col>
+            </Row>
           )}
         </FormItem>,
       ];
@@ -229,6 +273,19 @@ class UpdateForm extends PureComponent {
         <Button key="cancel" onClick={() => handleUpdateModalVisible(false, values)}>
           取消
         </Button>,
+        <Button key="forward" type="primary" onClick={() => this.handleNext(currentStep)}>
+          下一步
+        </Button>,
+      ];
+    }
+    if (currentStep === 3) {
+      return [
+        <Button key="back" style={{ float: 'left' }} onClick={this.backward}>
+          上一步
+        </Button>,
+        <Button key="cancel" onClick={() => handleUpdateModalVisible(false, values)}>
+          取消
+        </Button>,
         <Button key="submit" type="primary" onClick={() => this.handleNext(currentStep)}>
           完成
         </Button>,
@@ -263,6 +320,7 @@ class UpdateForm extends PureComponent {
           <Step title="输入订单信息" />
           <Step title="配置加工设备" />
           <Step title="设定加工时间" />
+          <Step title="设定工艺时间" />
         </Steps>
         {this.renderContent(currentStep, formVals)}
       </Modal>
@@ -399,10 +457,15 @@ class TableList extends PureComponent {
       dataIndex: 'unqualified',
     },
     {
+      title: '工艺时间',
+      dataIndex: 'technologytime',
+      render: val => <span>{parseInt(val/60000,10)}m{Math.round(val%60000)/1000}s</span>,
+    },
+    {
       title: '排产日期',
       dataIndex: 'date',
       sorter: true,
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
     },
     {
       title: '加工设备',
@@ -610,6 +673,8 @@ class TableList extends PureComponent {
           date:fields.date,
           unqualified:fields.unqualified,
           finished:fields.finished,
+          technologytime_m:fields.technologytime_m,
+          technologytime_s:fields.technologytime_s,
         },
       },
     });

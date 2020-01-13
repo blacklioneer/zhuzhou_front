@@ -66,7 +66,8 @@ class LineChartV extends React.Component {
 
     const timeScale = {
       type: 'time',
-      tickInterval: 1000,
+      // tickInterval: 1000,
+      tickCount:4,
       mask: 'mm:ss',
       range: [0, 1],
     };

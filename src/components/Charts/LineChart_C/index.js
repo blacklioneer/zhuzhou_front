@@ -66,7 +66,8 @@ class LineChartC extends React.Component {
 
     const timeScale = {
       type: 'time',
-      tickInterval: 1000,
+      // tickInterval: 1000,
+      tickCount:4,
       mask: 'mm:ss',
       range: [0, 1],
     };
@@ -106,7 +107,7 @@ class LineChartC extends React.Component {
         <div>
           {title && <h4>{title}</h4>}
           <Chart height={height} padding={padding} data={dv} scale={cols} forceFit theme='dark' plotBackground={background} background={background} style={{padding:0}}>
-            <Axis name="x" />
+            <Axis name="x"  />
             <Axis
               name="value"
               label={{

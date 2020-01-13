@@ -13,38 +13,35 @@ import {
   Button,
   Dropdown,
   Menu,
-  Divider,
   InputNumber,
   DatePicker,
   Modal,
   message,
   Badge,
   Steps,
-  Radio,
-  Switch,
+  Radio, Switch, Divider,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+
 
 import styles from './User.less';
 
 
 const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
 const { Option } = Select;
 const RadioGroup = Radio.Group;
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['default', 'success',];
-const status = ['未监测', '正在监测', ];
-const connectstatus = ['未连接', '已连接', ];
+const statusMap = ['warning','success'];
+const status = ['已结束','排班中'];
 // const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
 const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
-const run = [false,true];
+const run= [false,true];
 const CreateForm = Form.create()(props => {
+
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
@@ -56,129 +53,47 @@ const CreateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="新建连接"
+      title="排班信息录入"
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-      <FormItem key="eid" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="连接设备">
+      <FormItem key="eid" labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="选择排班设备">
         {form.getFieldDecorator('eid')(
           <Select style={{ width: '100%' }}>
             <Option value="1">KD-33</Option>
             <Option value="2">KD-34</Option>
             <Option value="3">KD-35</Option>
-            <Option value="4">KD-36</Option>
+            {/* <Option value="4">KD-36</Option>
             <Option value="5">KD-37</Option>
             <Option value="6">KD-38</Option>
             <Option value="7">KD-39</Option>
-            <Option value="8">KD-40</Option>
-            <Option value="9">BP-11</Option>
-            <Option value="10">BP-12</Option>
-            <Option value="11">BP-13</Option>
-            <Option value="12">BP-14</Option>
+            <Option value="8">KD-40</Option> */}
+            <Option value="4">BP-11</Option>
+            <Option value="5">BP-12</Option>
+            <Option value="6">BP-13</Option>
+{/*            <Option value="12">BP-14</Option>
             <Option value="13">BP-15</Option>
             <Option value="14">BP-16</Option>
             <Option value="15">BP-17</Option>
-            <Option value="16">BP-18</Option>
+            <Option value="16">BP-18</Option>  */}
           </Select>
         )}
-      </FormItem>,
+      </FormItem>
+      <FormItem key="manager" labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="负责人">
+        {form.getFieldDecorator('manager')(
+          <Input placeholder="请输入姓名" />
+        )}
+      </FormItem>
     </Modal>
   );
 });
-
-
-@Form.create()
-class UpdateForm extends PureComponent {
-  static defaultProps = {
-    handleUpdate: () => {},
-    handleUpdateModalVisible: () => {},
-    values: {},
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      formVals: {
-        eid: props.values.eid,
-        ip: props.values.ip,
-      },
-    };
-
-    this.formLayout = {
-      labelCol: { span: 7 },
-      wrapperCol: { span: 13 },
-    };
-  }
-
-  handleNext = () => {
-    const { form, handleUpdate } = this.props;
-    const { formVals: oldValue } = this.state;
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      const formVals = { ...oldValue, ...fieldsValue };
-      this.setState(
-        {
-          formVals,
-        },
-        () => {
-          handleUpdate(formVals);
-        }
-      );
-    });
-  };
-
-  renderContent = (formVals) => {
-    const { form } = this.props;
-      return [
-        <FormItem key="ip" {...this.formLayout} label="ip地址">
-          {form.getFieldDecorator('ip', {
-            initialValue: formVals.ip,
-          })(<Input placeholder="请输入" />)}
-        </FormItem>,
-      ];
-  };
-
-  renderFooter = () => {
-    const { handleUpdateModalVisible, values } = this.props;
-      return [
-        <Button key="cancel" onClick={() => handleUpdateModalVisible(false, values)}>
-          取消
-        </Button>,
-        <Button key="submit" type="primary" onClick={() => this.handleNext()}>
-          完成
-        </Button>,
-      ];
-  };
-
-  render() {
-    const { updateModalVisible, handleUpdateModalVisible, values } = this.props;
-    const { formVals } = this.state;
-
-    return (
-      <Modal
-        width={640}
-        bodyStyle={{ padding: '32px 40px 48px' }}
-        destroyOnClose
-        title="ip设置"
-        visible={updateModalVisible}
-        footer={this.renderFooter()}
-        onCancel={() => handleUpdateModalVisible(false, values)}
-        afterClose={() => handleUpdateModalVisible()}
-      >
-        {this.renderContent(formVals)}
-      </Modal>
-    );
-  }
-}
-
 
 @Form.create()
 class UpdateEquipmentForm extends PureComponent {
   static defaultProps = {
     handleUpdateEquipment: () => {},
-    handleUpdateEquipmentVisible: () => {}, /* 加工状态设置表是否可见 */
+    handleUpdateEquipmentVisible: () => {}, /* 异常状态设置表是否可见 */
     values: {},
   };
 
@@ -188,6 +103,7 @@ class UpdateEquipmentForm extends PureComponent {
     this.state = {
       formVals: {
         eid: props.values.eid,
+        id: props.values.id,
         status: props.values.status,
       },
     };
@@ -218,25 +134,26 @@ class UpdateEquipmentForm extends PureComponent {
   renderContent = (formVals) => {
     const { form } = this.props;
 
-      return [
-        <FormItem key="status" {...this.formLayout} label="监测设置">
-          {form.getFieldDecorator('status',
-            {initialValue:run[formVals.status], valuePropName: 'checked' })(<Switch />
-          )}
-        </FormItem>,
-      ];
+    return [
+      <FormItem key="status" {...this.formLayout} label="班次状态">
+        {form.getFieldDecorator('status',
+          { initialValue:run[formVals.status],valuePropName: 'checked' })(
+            <Switch />
+        )}
+      </FormItem>,
+    ];
   };
 
   renderFooter = () => {
     const { handleUpdateEquipmentVisible, values } = this.props;
-      return [
-        <Button key="cancel" onClick={() => handleUpdateEquipmentVisible(false, values)}>
-          取消
-        </Button>,
-        <Button key="submit" type="primary" onClick={() => this.handleNext()}>
-          完成
-        </Button>,
-      ];
+    return [
+      <Button key="cancel" onClick={() => handleUpdateEquipmentVisible(false, values)}>
+        取消
+      </Button>,
+      <Button key="submit" type="primary" onClick={() => this.handleNext()}>
+        完成
+      </Button>,
+    ];
   };
 
   render() {
@@ -248,7 +165,7 @@ class UpdateEquipmentForm extends PureComponent {
         width={640}
         bodyStyle={{ padding: '32px 40px 48px' }}
         destroyOnClose
-        title="监测状态设置"
+        title="结束当前班次"
         visible={equipmentmodalVisible}
         footer={this.renderFooter()}
         onCancel={() => handleUpdateEquipmentVisible(false, values)}
@@ -260,62 +177,79 @@ class UpdateEquipmentForm extends PureComponent {
   }
 }
 /* eslint react/no-multi-comp:0 */
-@connect(({ connectsetting, loading }) => ({
-  connectsetting,
-  loading: loading.models.connectsetting,
+@connect(({ finishedtimesetting, loading }) => ({
+  finishedtimesetting,
+  loading: loading.models.finishedtimesetting,
 }))
 @Form.create()
 class TableList extends PureComponent {
-  static defaultProps = {
-    handleSwitchChange: () => {},
-
-  };
-
-
   state = {
     modalVisible: false,
     equipmentmodalVisible: false,
-    updateModalVisible: false,
     expandForm: false,
     selectedRows: [],
     formValues: {},
-    stepFormValues: {},
     equipmentFormValues: {},
   };
 
   columns = [
     {
-      title: '加工设备',
+      title: '设备名',
       dataIndex: 'eid',
       sorter:true,
       render: val => <span>{eid[val]}</span>,
     },
     {
-      title: 'IP地址',
-      dataIndex: 'ip',
+      title: '负责人',
+      dataIndex: 'manager',
     },
     {
-      title: '监测状态',
+      title: '完成量',
+      dataIndex: 'finishednum',
+      sorter:true,
+    },
+    {
+      title: '班次状态',
       dataIndex: 'status',
+      filters: [
+        {
+          text: status[0],
+          value: 0,
+        },
+        {
+          text: status[1],
+          value: 1,
+        },
+      ],
       render(val) {
         return <Badge status={statusMap[val]} text={status[val]} />;
       },
     },
-
     {
-      title: '连接状态',
-      dataIndex: 'connection',
-      render(val) {
-        return <Badge status={statusMap[val]} text={connectstatus[val]} />;
-      },
+      title: '开始时间',
+      dataIndex: 'starttime',
+      sorter:true,
+      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
+    {
+      title: '结束时间',
+      dataIndex: 'finishedtime',
+      sorter:true,
+      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+    },
+    // {
+    //   title: '累计登录次数',
+    //   dataIndex: 'callNo',
+    //   sorter: true,
+    //   render: val => `${val}`,
+    //   // mark to display a total number
+    //   needTotal: true,
+    // },
     {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>设置ip</a>
-          <Divider type="vertical" />
-          <a onClick={() => this.handleUpdateEquipmentVisible(true, record)}>监测状态</a>
+          <a onClick={() => this.handleUpdateEquipmentVisible(true, record)}>结束</a>
         </Fragment>
       ),
     },
@@ -324,11 +258,9 @@ class TableList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'connectsetting/fetch',
+      type: 'finishedtimesetting/fetch',
     });
   }
-
-
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
@@ -351,11 +283,14 @@ class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'connectsetting/fetch',
+      type: 'finishedtimesetting/fetch',
       payload: params,
     });
   };
 
+  previewItem = id => {
+    router.push(`/profile/basic/${id}`);
+  };
 
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -364,7 +299,7 @@ class TableList extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'connectsetting/fetch',
+      type: 'finishedtimesetting/fetch',
       payload: {},
     });
   };
@@ -376,22 +311,22 @@ class TableList extends PureComponent {
     });
   };
 
-  handleMenuClick = () => {
+  handleMenuClick =() => {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
 
     if (selectedRows.length === 0) return;
       dispatch({
-        type: 'connectsetting/remove',
+        type: 'finishedtimesetting/remove',
         payload: {
-          eid: selectedRows.map(row => row.eid),
+          id: selectedRows.map(row => row.id),
         },
         callback: () => {
           this.setState({
             selectedRows: [],
           });
         },
-        });
+      });
   };
 
   handleSelectRows = rows => {
@@ -410,7 +345,6 @@ class TableList extends PureComponent {
 
       const values = {
         ...fieldsValue,
-        login_time: fieldsValue.login_time && fieldsValue.login_time.valueOf(),
       };
 
       this.setState({
@@ -418,7 +352,7 @@ class TableList extends PureComponent {
       });
 
       dispatch({
-        type: 'connectsetting/fetch',
+        type: 'finishedtimesetting/fetch',
         payload: values,
       });
     });
@@ -430,13 +364,23 @@ class TableList extends PureComponent {
     });
   };
 
-  handleUpdateModalVisible = (flag, record) => {
-    this.setState({
-      updateModalVisible: !!flag,
-      stepFormValues: record || {},
+  handleUpdateEquipment = fields => {
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
+    dispatch({
+      type: 'finishedtimesetting/update',
+      payload: {
+        query: formValues,
+        body: {
+          id: fields.id,
+          status: fields.status,
+          // finishednum: fields.finishednum,
+        },
+      },
     });
+    message.success('配置成功');
+    this.handleUpdateEquipmentVisible();
   };
-
 
   handleUpdateEquipmentVisible = (flag, record) => {
     this.setState({
@@ -448,9 +392,10 @@ class TableList extends PureComponent {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'connectsetting/add',
+      type: 'finishedtimesetting/add',
       payload: {
         eid: fields.eid,
+        manager: fields.manager,
       },
     });
 
@@ -458,87 +403,74 @@ class TableList extends PureComponent {
     this.handleModalVisible();
   };
 
-  handleUpdateEquipment = fields => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
-    dispatch({
-      type: 'connectsetting/updateequipment',
-      payload: {
-        query: formValues,
-        body: {
-          eid: fields.eid,
-          status: fields.status,
-        },
-      },
-    });
 
-    message.success('配置成功');
-    this.handleUpdateEquipmentVisible();
-  };
-
-
-  handleUpdate = fields => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
-    dispatch({
-      type: 'connectsetting/update',
-      payload: {
-        query: formValues,
-        body: {
-          eid: fields.eid,
-          ip: fields.ip,
-        },
-      },
-    });
-
-    message.success('配置成功');
-    this.handleUpdateModalVisible();
-  };
-
-/*  handleSwitchClick(){
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
-    dispatch({
-      type: 'connectsetting/updateequipment',
-      payload: {
-        query: formValues,
-        body: {
-          eid: fields.eid,
-          status: fields.status,
-        },
-      },
-    });
-
-    message.success('配置成功');
-    this.handleUpdateEquipmentVisible();
-  }; */   //尝试修改switch开关失败
+  renderSimpleForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="负责人">
+              {getFieldDecorator('manager')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="处理状态">
+              {getFieldDecorator('status')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Option value="1">排班中</Option>
+                  <Option value="0">已结束</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                重置
+              </Button>
+              {/*  <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                展开 <Icon type="down" />
+              </a> */}
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
 
 
-
+  renderForm() {
+    const { expandForm } = this.state;
+    // return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+    return expandForm ? this.renderSimpleForm(): this.renderSimpleForm();
+  }
 
   render() {
     const {
-      connectsetting: { data },
+      finishedtimesetting: { data },
       loading,
     } = this.props;
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues,equipmentmodalVisible,equipmentFormValues } = this.state;
+    const { selectedRows, modalVisible, equipmentmodalVisible,equipmentFormValues } = this.state;
 
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
-    };
-    const updateMethods = {
-      handleUpdateModalVisible: this.handleUpdateModalVisible,
-      handleUpdate: this.handleUpdate,
     };
     const updateEquipmentMethods = {
       handleUpdateEquipmentVisible: this.handleUpdateEquipmentVisible,
       handleUpdateEquipment: this.handleUpdateEquipment,
     };
     return (
-      <PageHeaderWrapper title="订单管理">
+      <PageHeaderWrapper title="班次管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
@@ -562,13 +494,6 @@ class TableList extends PureComponent {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
-        {stepFormValues && Object.keys(stepFormValues).length ? (
-          <UpdateForm
-            {...updateMethods}
-            updateModalVisible={updateModalVisible}
-            values={stepFormValues}
-          />
-        ) : null}
         {equipmentFormValues && Object.keys(equipmentFormValues).length ? (
           <UpdateEquipmentForm
             {...updateEquipmentMethods}

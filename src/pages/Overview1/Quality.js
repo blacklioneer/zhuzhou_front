@@ -30,7 +30,7 @@ const Quality = memo(({daliyqualified,weeklyqualified})=>(
             <LineChartD
               data={daliyqualified}
               titleMap={{ y1: 'KD2号生产线'}}
-              height={206}
+              height={212}
             />
           </Card>
         </Col>
@@ -44,7 +44,7 @@ const Quality = memo(({daliyqualified,weeklyqualified})=>(
             <LineChartW
               data={weeklyqualified}
               titleMap={{ y1: 'KD2号生产线'}}
-              height={206}
+              height={212}
             />
           </Card>
         </Col>

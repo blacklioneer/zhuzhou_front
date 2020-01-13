@@ -73,7 +73,7 @@ class Equipment1 extends Component{
         type: 'equipmentdata/fetchseconddata',
         payload: params,
       });
-    },1000 );
+    },15000 );
     this.timer2 = setInterval(() => {
       dispatch({
         type: 'equipmentdata/fetchminitedata',

@@ -44,4 +44,17 @@ export default {
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
+  'menu.overview1': '工业大屏',
+  'menu.setting': '设置',
+  'menu.setting.user': '登录用户管理',
+  'menu.setting.order': '订单管理',
+  'menu.setting.error': '异常管理',
+  'menu.setting.oee': 'OEE管理',
+  'menu.setting.maintain': '保养管理',
+  'menu.setting.transmission': '物料配送管理',
+  'menu.setting.connect': '数控系统连接管理',
+
+
+
+
 };

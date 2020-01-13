@@ -105,7 +105,7 @@ class Overview extends Component{
       dispatch({
         type: 'productionlayout/fetch',
       });
-    },60000 );
+    },30000 );
     // });
   }
 
@@ -227,7 +227,7 @@ class Overview extends Component{
             </Suspense>
           </Col>
         </Row>
-        <Row gutter={12}>
+        <Row gutter={12} style={{marginTop:'18px'}}>
           <Col {...topColResponsiveProps}>
             <Suspense fallback={null}>
               <TransitionTable

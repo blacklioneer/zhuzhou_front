@@ -74,60 +74,58 @@ class UnusualStatus extends PureComponent {
   render() {
  const {Tabledata,chartdata,Bardata,onChange}=this.props;
     return (
-      <div style={{marginTop:'12px'}}>
-        <Card
-          title={<span className={styles.textprimarycolor}>生产线异常信息</span>}
-          className={styles.maincard}
-          bordered={false}
-        >
-          <Row gutter={12}>
-            <Col span={12}>
-              <ShowTable
-                data={Tabledata}
-                columns={this.columns}
-                onChange={onChange}
-              />
-            </Col>
-            <Col span={12}>
-              <Row gutter={8}>
-                <Col span={12}>
-                  <div style={{padding:'34.5px 0'}}>
-                    <Card
-                      bodyStyle={{padding:'0'}}
-                      className={styles.seconderycard}
-                      bordered={false}
-                      title={<span className={styles.textseconderycolor}>日设备异常种类统计</span>}
-                    >
-                      <MultiPieVertical
-                        data={chartdata}
+      <Card
+        title={<span className={styles.textprimarycolor}>生产线异常信息</span>}
+        className={styles.maincard}
+        bordered={false}
+      >
+        <Row gutter={12}>
+          <Col span={12}>
+            <ShowTable
+              data={Tabledata}
+              columns={this.columns}
+              onChange={onChange}
+            />
+          </Col>
+          <Col span={12}>
+            <Row gutter={8}>
+              <Col span={12}>
+                <div style={{padding:'34.5px 0'}}>
+                  <Card
+                    bodyStyle={{padding:'0'}}
+                    className={styles.seconderycard}
+                    bordered={false}
+                    title={<span className={styles.textseconderycolor}>日设备异常种类统计</span>}
+                  >
+                    <MultiPieVertical
+                      data={chartdata}
+                      height={206}
+                    />
+                  </Card>
+                </div>
+              </Col>
+              <Col span={12}>
+                <div style={{padding:'34.5px 0'}}>
+                  <Card
+                    bodyStyle={{padding:'0'}}
+                    className={styles.seconderycard}
+                    bordered={false}
+                    title={<span className={styles.textseconderycolor}>周设备异常次数统计</span>}
+                  >
+                    <div>
+                      <DarkBar
+                        padding={[12,12,48,20]}
+                        data={Bardata}
                         height={206}
                       />
-                    </Card>
-                  </div>
-                </Col>
-                <Col span={12}>
-                  <div style={{padding:'34.5px 0'}}>
-                    <Card
-                      bodyStyle={{padding:'0'}}
-                      className={styles.seconderycard}
-                      bordered={false}
-                      title={<span className={styles.textseconderycolor}>周设备异常次数统计</span>}
-                    >
-                      <div>
-                        <DarkBar
-                          padding={[12,12,48,20]}
-                          data={Bardata}
-                          height={206}
-                        />
-                      </div>
-                    </Card>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Card>
-      </div>
+                    </div>
+                  </Card>
+                </div>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Card>
     );
   }
 }

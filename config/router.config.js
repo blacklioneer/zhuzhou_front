@@ -43,7 +43,7 @@ export default [
       //overview
       {
         path: '/overview1',
-        name: '工业大屏',
+        name: 'overview1',
         icon: 'dashboard',
         authority:['admin','user','viewer'],
         component: './Overview1/Overview',
@@ -100,51 +100,57 @@ export default [
       //setting
       {
         path: '/settings',
-        name: '设置',
+        name: 'setting',
         icon: 'setting',
         authority: ['admin','user'],
         routes: [
           {
             path: '/settings/user',
-            name: '登录用户管理',
+            name: 'user',
             authority: ['admin'],
             component: './Settings/User',
           },
           {
             path: '/settings/schedule',
-            name: '订单管理',
+            name: 'order',
             authority: ['user','admin'],
             component: './Settings/ScheduleSetting',
           },
           {
             path: '/settings/error',
-            name: '异常管理',
+            name: 'error',
             authority: ['user','admin'],
             component: './Settings/ErrorSetting',
           },
           {
             path: '/settings/oee',
-            name: 'OEE管理',
+            name: 'oee',
             authority: ['user','admin'],
             component: './Settings/OeeSetting',
           },
           {
             path: '/settings/maintain',
-            name: '保养管理',
+            name: 'maintain',
             authority: ['user','admin'],
             component: './Settings/MaintainSetting',
           },
           {
             path: '/settings/transmission',
-            name: '物料配送管理',
+            name: 'transmission',
             authority: ['user','admin'],
             component: './Settings/TransmissionSetting',
           },
           {
             path: '/settings/connect',
-            name: '数控系统连接管理',
+            name: 'connect',
             authority: ['user','admin'],
             component: './Settings/ConnectSetting',
+          },
+          {
+            path: '/settings/finishedsetting',
+            name: '班次管理',
+            authority: ['user','admin'],
+            component: './Settings/FinishedTime',
           }
         ]
       },
@@ -286,6 +292,7 @@ export default [
         name: 'exception',
         icon: 'warning',
         path: '/exception',
+        hideInMenu:true,
         routes: [
           // exception
           {

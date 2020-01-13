@@ -33,7 +33,8 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+// const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
 /* const CreateForm = Form.create()(props => {
 
   const { modalVisible, form, handleAdd, handleModalVisible } = props;

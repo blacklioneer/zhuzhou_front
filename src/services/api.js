@@ -203,7 +203,39 @@ export async function updateError(params = {}) {
     },
   });
 }
+export async function queryFinishedTime(params) {
+  return request(`/api/setting/finishedtime?${stringify(params)}`);
+}
 
+export async function removeFinishedTime(params) {
+  return request('/api/setting/finishedtime', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}
+
+export async function addFinishedTime(params) {
+  return request('/api/setting/finishedtime', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+
+export async function updateFinishedTime(params = {}) {
+  return request(`/api/setting/finishedtime?${stringify(params.query)}`, {
+    method: 'POST',
+    body: {
+      ...params.body,
+      method: 'update',
+    },
+  });
+}
 export async function queryOee(params) {
   return request(`/api/setting/oee?${stringify(params)}`);
 }

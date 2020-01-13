@@ -79,19 +79,17 @@ class TransitionTable extends PureComponent {
   render() {
     const{data,onChange}=this.props;
     return (
-      <div style={{marginTop:'12px'}}>
-        <Card
-          title={<span className={styles.textprimarycolor}>物料配送</span>}
-          className={styles.maincard}
-          bordered={false}
-        >
-          <ShowTable
-            data={data}
-            columns={this.columns}
-            onChange={onChange}
-          />
-        </Card>
-      </div>
+      <Card
+        title={<span className={styles.textprimarycolor}>物料配送</span>}
+        className={styles.maincard}
+        bordered={false}
+      >
+        <ShowTable
+          data={data}
+          columns={this.columns}
+          onChange={onChange}
+        />
+      </Card>
     );
   }
 }

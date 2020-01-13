@@ -35,11 +35,8 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['error', 'success','warning'];
-const status = ['异常未解决', '已解决','预警未解决' ];
-const type1 = ['异常信息','预警信息'];
-const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
-const run= [false,true,false];
+// const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
+const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
 /* const CreateForm = Form.create()(props => {
 
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
