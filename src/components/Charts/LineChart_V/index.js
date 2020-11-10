@@ -25,11 +25,16 @@ class LineChartV extends React.Component {
     data.sort((a, b) => a.x - b.x);
 
     let max;
+    let min;
     if (data[0] && data[0].y1 && data[0].y2) {
       max = Math.max(
         [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
         [...data].sort((a, b) => b.y2 - a.y2)[0].y2
       );
+      min = Math.min(
+        [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
+        [...data].sort((a, b) => b.y2 - a.y2)[0].y2
+      )
     }
 
     const ds = new DataSet({
@@ -76,7 +81,7 @@ class LineChartV extends React.Component {
       x: timeScale,
       value: {
         max,
-        min: 0,
+        min,
       },
     };
     const background = {

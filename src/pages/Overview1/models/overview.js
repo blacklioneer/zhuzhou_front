@@ -81,12 +81,13 @@ export default {
         payload: response,
       });
     },
-    *fetchproducttable({ payload }, { call, put }) {
+    *fetchproducttable({ payload, callback }, { call, put }) {
       const response = yield call(ProductTable, payload);
       yield put({
         type: 'save',
         payload: response,
       });
+      if (callback) callback(response);
     },
     *fetchtransitiontable({ payload }, { call, put }) {
         const response = yield call(TransitionTable, payload);
@@ -95,12 +96,13 @@ export default {
           payload: response,
         });
       },
-    *fetchunusualstatustable({ payload }, { call, put }) {
+    *fetchunusualstatustable({ payload,callback }, { call, put }) {
       const response = yield call(UnusualTable, payload);
       yield put({
         type: 'save',
         payload: response,
       });
+      if (callback) callback(response);
     },
     *unusualstatusdata(_, { call, put }) {
       const response = yield call(UnusualStatus);

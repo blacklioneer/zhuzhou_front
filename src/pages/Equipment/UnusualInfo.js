@@ -16,11 +16,6 @@ const style = [styles.statustextthirdery_error,styles.statustextthirdery_run,sty
 class UnusualInfo extends PureComponent {
   columns = [
     {
-      title: '异常编号',
-      dataIndex: 'name',
-      // render: text => <a onClick={() => this.previewItem(text)}>{text}</a>,
-    },
-    {
       title: '异常时间',
       dataIndex: 'unusualtime',
     },
@@ -29,7 +24,7 @@ class UnusualInfo extends PureComponent {
       dataIndex: 'unusualdesc',
     },
     {
-      title: '解决策略',
+      title: '解决措施',
       dataIndex: 'solution',
     },
     {

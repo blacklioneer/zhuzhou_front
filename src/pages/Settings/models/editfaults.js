@@ -1,10 +1,10 @@
-import { queryError, removeError, addError, updateError } from '@/services/api';
+import { queryFaultList, removeFaultList, addFaultList, updateFaultList } from '@/services/api';
 
 export default {
-  namespace: 'errorsetting',
+  namespace: 'editfaults',
 
   state: {
-    data2: {
+    data1: {
       list: [],
       pagination: {},
     },
@@ -12,14 +12,14 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryError, payload);
+      const response = yield call(queryFaultList, payload);
       yield put({
         type: 'save',
         payload: response,
       });
     },
     *add({ payload, callback }, { call, put }) {
-      const response = yield call(addError, payload);
+      const response = yield call(addFaultList, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -27,7 +27,7 @@ export default {
       if (callback) callback(response);
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeError, payload);
+      const response = yield call(removeFaultList, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -35,12 +35,12 @@ export default {
       if (callback) callback();
     },
     *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateError, payload);
+      const response = yield call(updateFaultList, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      if (callback) callback();
+      if (callback) callback(response);
     },
   },
 
@@ -48,7 +48,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data2: action.payload,
+        data1: action.payload,
       };
     },
   },

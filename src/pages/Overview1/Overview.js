@@ -1,6 +1,6 @@
 import React,{ Component, Suspense }  from 'react';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
-import { Row, Col} from 'antd';
+import { Row, Col, message } from 'antd';
 import { AsyncLoadBizCharts } from '@/components/Charts/AsyncLoadBizCharts';
 import { connect } from 'dva';
 
@@ -31,6 +31,14 @@ const ProductLayout = React.lazy(() => import('./ProductLayout'));
   productionlayout,
 }))
 class Overview extends Component{
+  state = {
+    currentPageP: 1,
+    currentPageU: 1,
+    currentTabKey:'day',
+
+  };
+
+
   componentDidMount() {
     const { dispatch } = this.props;
     // this.reqRef = requestAnimationFrame(() => {
@@ -65,60 +73,119 @@ class Overview extends Component{
       dispatch({
         type: 'overview/fetchschedule',
       });
-    },60000 );
-    this.timer2 = setInterval(() => {
       dispatch({
         type: 'overview/fetchproducttable',
       });
-    },60000 );
-    this.timer3 = setInterval(() => {
       dispatch({
         type: 'overview/fetchtransitiontable',
       });
-    },60000 );
-    this.timer4 = setInterval(() => {
       dispatch({
         type: 'overview/fetchunusualstatustable',
       });
-    },60000 );
-    this.timer5 = setInterval(() => {
       dispatch({
         type: 'overview/unusualstatusdata',
       });
-    },60000 );
-    this.timer6 = setInterval(() => {
       dispatch({
         type: 'overview/oeedata',
       });
-    },60000 );
-    this.timer7 = setInterval(() => {
-      dispatch({
-        type: 'overview/qualifieddata',
-      });
-    },60000 );
-    this.timer8 = setInterval(() => {
       dispatch({
         type: 'overview/equipmentstatusdata',
       });
     },60000 );
+    // this.timer2 = setInterval(() => {
+    //   dispatch({
+    //     type: 'overview/fetchproducttable',
+    //   });
+    // },60000 );
+    // this.timer3 = setInterval(() => {
+    //   dispatch({
+    //     type: 'overview/fetchtransitiontable',
+    //   });
+    // },60000 );
+    // this.timer4 = setInterval(() => {
+    //   dispatch({
+    //     type: 'overview/fetchunusualstatustable',
+    //   });
+    // },60000 );
+    // this.timer5 = setInterval(() => {
+    //   dispatch({
+    //     type: 'overview/unusualstatusdata',
+    //   });
+    // },60000 );
+    // this.timer6 = setInterval(() => {
+    //   dispatch({
+    //     type: 'overview/oeedata',
+    //   });
+    // },60000 );
+    this.timer7 = setInterval(() => {
+      dispatch({
+        type: 'overview/qualifieddata',
+      });
+    },600000 );
+    // this.timer8 = setInterval(() => {
+    //   dispatch({
+    //     type: 'overview/equipmentstatusdata',
+    //   });
+    // },60000 );
     this.timer9 = setInterval(() => {
       dispatch({
         type: 'productionlayout/fetch',
       });
-    },30000 );
+    },10000 );
+    // to fullfill auto change the table just front 3 pages
+    this.timer10 = setInterval(() => {
+      const {currentPageP,currentPageU,currentTabKey} = this.state;
+      const paramsP = {
+        currentPage: currentPageP,
+        method: 'add',
+      };
+      const paramsU = {
+        currentPage: currentPageU,
+        method: 'add',
+      };
+      dispatch({
+        type: 'overview/fetchproducttable',
+        payload: paramsP,
+        callback: (response) => {
+         this.setState({
+           currentPageP: response.productdata.pagination.current,
+         })
+        }
+      });
+      dispatch({
+        type: 'overview/fetchunusualstatustable',
+        payload: paramsU,
+        callback: (response) => {
+          this.setState({
+            currentPageU: response.unusualtabledata.pagination.current,
+          })
+        }
+      });
+      if(currentTabKey==='day'){
+        this.setState({
+          currentTabKey: 'week',
+        })
+      }
+      else {
+        this.setState({
+          currentTabKey: 'day',
+        })
+      }
+    },10000 );
     // });
   }
 
   componentWillUnmount() {
     clearInterval(this.timer1);
-    clearInterval(this.timer2);
-    clearInterval(this.timer3);
-    clearInterval(this.timer4);
-    clearInterval(this.timer5);
-    clearInterval(this.timer6);
+    // clearInterval(this.timer2);
+    // clearInterval(this.timer3);
+    // clearInterval(this.timer4);
+    // clearInterval(this.timer5);
+    // clearInterval(this.timer6);
     clearInterval(this.timer7);
-    clearInterval(this.timer8);
+    // clearInterval(this.timer8);
     clearInterval(this.timer9);
+    clearInterval(this.timer10);
     const { dispatch } = this.props;
     dispatch({
       type: 'overview/clear',
@@ -139,6 +206,10 @@ class Overview extends Component{
       type: 'overview/fetchproducttable',
       payload: params,
     });
+    this.setState({
+        currentPageP : pagination.current,
+      }
+    );
   };
 
   handleTransitionTableChange = (pagination) => {
@@ -147,6 +218,8 @@ class Overview extends Component{
     const params = {
       currentPage: pagination.current,
     };
+
+
     dispatch({
       type: 'overview/fetchtransitiontable',
       payload: params,
@@ -159,15 +232,25 @@ class Overview extends Component{
     const params = {
       currentPage: pagination.current,
     };
+    this.setState({
+      currentPageU : pagination.current,
+    });
     dispatch({
       type: 'overview/fetchunusualstatustable',
       payload: params,
     });
   };
 
+  handleTabChange = key => {
+    this.setState({
+      currentTabKey: key,
+    });
+  };
+
 
   render(){
     const {overview,productionlayout}=this.props;
+    const{currentTabKey}=this.state;
     const {
       ds,
       ws,
@@ -242,7 +325,9 @@ class Overview extends Component{
                 Tabledata={unusualtabledata}
                 chartdata={unusualchartdata}
                 Bardata={unusualbardata}
+                activeKey={currentTabKey}
                 onChange={this.handleUnusualTableChange}
+                handleTabChange={this.handleTabChange}
               />
             </Suspense>
           </Col>

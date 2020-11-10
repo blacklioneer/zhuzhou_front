@@ -31,6 +31,7 @@ const colsecond={
   lg: 12,
   xl: 12,
 };
+const Tabs =['temperature','load','override','consumption'];
 
 
 const icon =[
@@ -73,7 +74,7 @@ class Equipment1 extends Component{
         type: 'equipmentdata/fetchseconddata',
         payload: params,
       });
-    },15000 );
+    },2000 );
     this.timer2 = setInterval(() => {
       dispatch({
         type: 'equipmentdata/fetchminitedata',
@@ -129,7 +130,6 @@ class Equipment1 extends Component{
       order,
       transition,
       unusualdata,
-      maintain,
       warning,
       runstatus,
       temp,
@@ -149,9 +149,9 @@ class Equipment1 extends Component{
                     className={styles.headprimarycolor}
                     onClick={this.handelClickChange}
                   >
-                    G01加工设备
+                    KD-36
                   </p>
-                  <p className={styles.headsecondrycolor}>G01加工设备</p>
+                  <p className={styles.headsecondrycolor}>大规格五轴工具磨床</p>
                 </span>
               </Col>
               <Col span={6}>
@@ -194,39 +194,37 @@ class Equipment1 extends Component{
             </Col>
           </Row>
           <Row gutter={24} style={{paddingTop:'24px'}}>
-            <Col {...colsecond}>
+     {/*       <Col {...colsecond}>
               <Suspense fallback={null}>
                 <Maintenance
                   maintain={maintain}
                 />
               </Suspense>
-            </Col>
+            </Col> */}
             <Col {...colsecond}>
               <Suspense fallback={null}>
                 <ForeseeableWarning
                   warning={warning}
                 />
               </Suspense>
+              <Row style={{paddingTop:'24px'}} gutter={24}>
+                <Suspense fallback={null}>
+                  <LineChart
+                    activeKey={currentTabKey}
+                    handleTabChange={this.handleTabChange}
+                    temperaturedata={temp}
+                    loaddata={load}
+                    energyconsumptiondata={consumption}
+                    vibrationdata={viberation}
+                  />
+                </Suspense>
+              </Row>
             </Col>
-          </Row>
-          <Row style={{paddingTop:'24px'}} gutter={24}>
             <Col {...colsecond}>
               <Suspense fallback={null}>
                 <UnusualInfo
                   data={unusualdata}
                   onChange={this.handleUnusualTableChange}
-                />
-              </Suspense>
-            </Col>
-            <Col {...colsecond}>
-              <Suspense fallback={null}>
-                <LineChart
-                  activeKey={currentTabKey}
-                  handleTabChange={this.handleTabChange}
-                  temperaturedata={temp}
-                  loaddata={load}
-                  energyconsumptiondata={consumption}
-                  vibrationdata={viberation}
                 />
               </Suspense>
             </Col>

@@ -30,7 +30,7 @@ const links = [
 
 const copyright = (
   <Fragment>
-    南京理工大学机械工程学院开发 <Icon type="copyright" /> 2019
+    南京理工大学 <Icon type="copyright" /> 2019
   </Fragment>
 );
 

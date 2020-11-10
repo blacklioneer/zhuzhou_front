@@ -227,6 +227,16 @@ export async function addFinishedTime(params) {
   });
 }
 
+export async function finishFinishedTime(params) {
+  return request('/api/setting/finishedtime', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'finish',
+    },
+  });
+}
+
 export async function updateFinishedTime(params = {}) {
   return request(`/api/setting/finishedtime?${stringify(params.query)}`, {
     method: 'POST',
@@ -339,6 +349,30 @@ export async function updateMaintain(params = {}) {
 }
 export async function queryPlanning(params) {
   return request(`/api/setting/planning?${stringify(params)}`);
+}
+
+// 获取待加工订单
+
+export async function getUnFinished(params) {
+  return request('/api/setting/planning', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'getunfinished',
+    },
+  });
+}
+
+// 获取已加工订单
+
+export async function getClear(params) {
+  return request('/api/setting/planning', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'getclear',
+    },
+  });
 }
 
 export async function removePlanning(params) {
@@ -521,4 +555,107 @@ export async function GetEquipmentUnusualTableData(params) {
 }
 
 
+/* /////故障信息表数据获取///// */
 
+export async function queryErrorList(params) {
+  return request(`/api/setting/errorlist?${stringify(params)}`);
+}
+
+export async function removeErrorList(params) {
+  return request('/api/setting/errorlist', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}
+
+export async function addErrorList(params) {
+  return request('/api/setting/errorlist', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+
+export async function updateErrorList(params = {}) {
+  return request(`/api/setting/errorlist?${stringify(params.query)}`, {
+    method: 'POST',
+    body: {
+      ...params.body,
+      method: 'update',
+    },
+  });
+}
+/* /////机床报警信息表数据获取///// */
+export async function queryFaultList(params) {
+  return request(`/api/setting/faultlist?${stringify(params)}`);
+}
+
+export async function removeFaultList(params) {
+  return request('/api/setting/faultlist', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}
+
+export async function addFaultList(params) {
+  return request('/api/setting/faultlist', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+
+export async function updateFaultList(params = {}) {
+  return request(`/api/setting/faultlist?${stringify(params.query)}`, {
+    method: 'POST',
+    body: {
+      ...params.body,
+      method: 'update',
+    },
+  });
+}
+
+/* /////预警信息表数据获取///// */
+export async function queryWarningList(params) {
+  return request(`/api/setting/warninglist?${stringify(params)}`);
+}
+
+export async function removeWarningList(params) {
+  return request('/api/setting/warninglist', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}
+
+export async function addWarningList(params) {
+  return request('/api/setting/warninglist', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+
+export async function updateWarningList(params = {}) {
+  return request(`/api/setting/warninglist?${stringify(params.query)}`, {
+    method: 'POST',
+    body: {
+      ...params.body,
+      method: 'update',
+    },
+  });
+}

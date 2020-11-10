@@ -29,8 +29,7 @@ export default {
       level:0,
     },
     warning:{
-      desc:'',
-      solution:'',
+      percent:1,
       status:0,
     },
     runstatus:0,

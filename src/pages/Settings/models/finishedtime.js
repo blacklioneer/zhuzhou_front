@@ -1,4 +1,5 @@
-import { queryFinishedTime, removeFinishedTime, addFinishedTime, updateFinishedTime } from '@/services/api';
+import { queryFinishedTime, removeFinishedTime, addFinishedTime, updateFinishedTime,finishFinishedTime } from '@/services/api';
+import { message } from 'antd';
 
 export default {
   namespace: 'finishedtimesetting',
@@ -24,7 +25,16 @@ export default {
         type: 'save',
         payload: response,
       });
-      if (callback) callback();
+      if (callback) callback(response);
+    },
+
+    *finish({ payload, callback }, { call, put }) {
+      const response = yield call(finishFinishedTime, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback(response);
     },
     *remove({ payload, callback }, { call, put }) {
       const response = yield call(removeFinishedTime, payload);
@@ -40,7 +50,10 @@ export default {
         type: 'save',
         payload: response,
       });
-      if (callback) callback();
+      if (callback && typeof callback === 'function') {
+        callback(response)
+      }
+
     },
   },
 

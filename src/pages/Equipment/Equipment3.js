@@ -13,7 +13,7 @@ const  OEE=React.lazy(()=> import('./OEE'));
 const RunStatus=React.lazy(()=> import('./RunStatus'));
 const UnusualInfo=React.lazy(()=> import('./UnusualInfo'));
 const ForeseeableWarning=React.lazy(()=> import('./ForeseeableWarning'));
-const LineChart = React.lazy(() => import('./LineChart'));
+const LineChartWoutTmp = React.lazy(() => import('./LineChartWithoutTmp'));
 const Maintenance = React.lazy(()=> import('./Maintenance'));
 const ShowTime = React.lazy(()=> import('./ShowTime'));
 
@@ -47,7 +47,7 @@ const icon =[
 }))
 class Equipment1 extends Component{
   state = {
-    currentTabKey: 'temperature',
+    currentTabKey: 'vibration',
   };
 
   componentWillMount() {
@@ -73,7 +73,7 @@ class Equipment1 extends Component{
         type: 'equipmentdata/fetchseconddata',
         payload: params,
       });
-    },15000 );
+    },2000 );
     this.timer2 = setInterval(() => {
       dispatch({
         type: 'equipmentdata/fetchminitedata',
@@ -129,7 +129,6 @@ class Equipment1 extends Component{
       order,
       transition,
       unusualdata,
-      maintain,
       warning,
       runstatus,
       temp,
@@ -149,9 +148,9 @@ class Equipment1 extends Component{
                     className={styles.headprimarycolor}
                     onClick={this.handelClickChange}
                   >
-                    G01加工设备
+                    KD-44
                   </p>
-                  <p className={styles.headsecondrycolor}>G01加工设备</p>
+                  <p className={styles.headsecondrycolor}>小规格五轴工具磨床</p>
                 </span>
               </Col>
               <Col span={6}>
@@ -194,39 +193,37 @@ class Equipment1 extends Component{
             </Col>
           </Row>
           <Row gutter={24} style={{paddingTop:'24px'}}>
-            <Col {...colsecond}>
+            {/*       <Col {...colsecond}>
               <Suspense fallback={null}>
                 <Maintenance
                   maintain={maintain}
                 />
               </Suspense>
-            </Col>
+            </Col> */}
             <Col {...colsecond}>
               <Suspense fallback={null}>
                 <ForeseeableWarning
                   warning={warning}
                 />
               </Suspense>
+              <Row style={{paddingTop:'24px'}} gutter={24}>
+                <Suspense fallback={null}>
+                  <LineChartWoutTmp
+                    activeKey={currentTabKey}
+                    handleTabChange={this.handleTabChange}
+                    temperaturedata={temp}
+                    loaddata={load}
+                    energyconsumptiondata={consumption}
+                    vibrationdata={viberation}
+                  />
+                </Suspense>
+              </Row>
             </Col>
-          </Row>
-          <Row style={{paddingTop:'24px'}} gutter={24}>
             <Col {...colsecond}>
               <Suspense fallback={null}>
                 <UnusualInfo
                   data={unusualdata}
                   onChange={this.handleUnusualTableChange}
-                />
-              </Suspense>
-            </Col>
-            <Col {...colsecond}>
-              <Suspense fallback={null}>
-                <LineChart
-                  activeKey={currentTabKey}
-                  handleTabChange={this.handleTabChange}
-                  temperaturedata={temp}
-                  loaddata={load}
-                  energyconsumptiondata={consumption}
-                  vibrationdata={viberation}
                 />
               </Suspense>
             </Col>

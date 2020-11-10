@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Card, Tabs } from 'antd';
 // import { formatMessage, FormattedMessage } from 'umi/locale';
 import styles from './Equipment1.less'
-import { LineChartT,LineChartC,LineChartV,LineChartL } from '@/components/Charts';
+import { LineChartC,LineChartV } from '@/components/Charts';
 // import NumberInfo from '@/components/NumberInfo';
 
 
@@ -35,7 +35,7 @@ import { LineChartT,LineChartC,LineChartV,LineChartL } from '@/components/Charts
 
 const { TabPane } = Tabs;
 
-const LineData = memo(
+const LineDataWoutTmp = memo(
   ({ activeKey, loading, temperaturedata, loaddata,energyconsumptiondata,vibrationdata,handleTabChange }) => (
     <Card
       loading={loading}
@@ -44,17 +44,6 @@ const LineData = memo(
       bordered={false}
     >
       <Tabs activeKey={activeKey} onChange={handleTabChange}>
-        <TabPane tab={<span className={styles.textseconderycolor}>温度</span>} key='temperature'>
-          <div style={{ padding: '0 24px' }}>
-            <LineChartT
-              height={223}
-              data={temperaturedata}
-              titleMap={{
-                y1:'温度'
-              }}
-            />
-          </div>
-        </TabPane>
         {/*  <TabPane tab={<span className={styles.textseconderycolor}>负载</span>} key='load'>
           <div style={{ padding: '0 24px' }}>
             <LineChartL
@@ -109,4 +98,4 @@ const LineData = memo(
   )
 );
 
-export default LineData;
+export default LineDataWoutTmp;

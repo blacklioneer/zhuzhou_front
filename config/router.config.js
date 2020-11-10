@@ -45,7 +45,7 @@ export default [
         path: '/overview1',
         name: 'overview1',
         icon: 'dashboard',
-        authority:['admin','user','viewer'],
+        authority:['admin','viewer'],
         component: './Overview1/Overview',
       },
       //equipment
@@ -56,33 +56,33 @@ export default [
         authority:['admin','user','viewer'],
         routes: [
           {
-            path: '/equipment/KD-33',
-            name: 'KD-33',
+            path: '/equipment/KD-36',
+            name: 'KD-36',
             component: './Equipment/Equipment1',
           },
           {
-            path: '/equipment/KD-34',
-            name: 'KD-34',
+            path: '/equipment/KD-43',
+            name: 'KD-43',
             component: './Equipment/Equipment2',
           },
           {
-            path: '/equipment/KD-35',
-            name: 'KD-35',
+            path: '/equipment/KD-44',
+            name: 'KD-44',
             component: './Equipment/Equipment3',
           },
           {
-            path: '/equipment/BPX-11',
-            name: 'BPX-11',
+            path: '/equipment/KD-47',
+            name: 'KD-47',
             component: './Equipment/Equipment4',
           },
           {
-            path: '/equipment/BPX-12',
-            name: 'BPX-12',
+            path: '/equipment/KD-48',
+            name: 'KD-48',
             component: './Equipment/Equipment5',
           },
           {
-            path: '/equipment/BPX-13',
-            name: 'BPX-13',
+            path: '/equipment/KD-39',
+            name: 'KD-39',
             component: './Equipment/Equipment6',
           },
           // {
@@ -110,6 +110,7 @@ export default [
             authority: ['admin'],
             component: './Settings/User',
           },
+
           {
             path: '/settings/schedule',
             name: 'order',
@@ -123,16 +124,44 @@ export default [
             component: './Settings/ErrorSetting',
           },
           {
-            path: '/settings/oee',
-            name: 'oee',
+            path: '/settings/errordatabase',
+            name: 'errordatabasesetting',
             authority: ['user','admin'],
-            component: './Settings/OeeSetting',
+            routes:[
+              {
+                path: '/settings/errordatabase/editerrors',
+                name: 'inputerrordatabase',
+                component: './Settings/EditErrors',
+              },
+              {
+                path: '/settings/errordatabase/editfaults',
+                name: 'machineerrordatabase',
+                component: './Settings/EditFaults',
+              },
+              {
+                path: '/settings/errordatabase/editwarnings',
+                name: 'warningdatabase',
+                component: './Settings/EditWarnings',
+              },
+            ],
           },
-          {
+          // {
+          //   path: '/settings/oee',
+          //   name: 'oee',
+          //   authority: ['user','admin'],
+          //   component: './Settings/OeeSetting',
+          // },
+         /* {
             path: '/settings/maintain',
             name: 'maintain',
             authority: ['user','admin'],
             component: './Settings/MaintainSetting',
+          }, */
+          {
+            path: '/settings/finishedsetting',
+            name: '班次管理',
+            authority: ['user','admin'],
+            component: './Settings/FinishedTime',
           },
           {
             path: '/settings/transmission',
@@ -146,12 +175,6 @@ export default [
             authority: ['user','admin'],
             component: './Settings/ConnectSetting',
           },
-          {
-            path: '/settings/finishedsetting',
-            name: '班次管理',
-            authority: ['user','admin'],
-            component: './Settings/FinishedTime',
-          }
         ]
       },
       // forms

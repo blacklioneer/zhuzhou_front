@@ -26,6 +26,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 
 import styles from './User.less';
+import ShowTable from '@/components/ShowTable';
 
 
 const FormItem = Form.Item;
@@ -37,9 +38,8 @@ const getValue = obj =>
     .join(',');
 const statusMap = ['error', 'success','warning'];
 const status = ['异常未解决', '已解决','预警未解决' ];
-const type1 = ['异常信息','预警信息'];
-// const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
-const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
+const type1 = ['机床报警','系统预警','录入故障'];
+const eid= ['','KD-36','KD-43','KD-44','KD-47','KD-48','KD-39'];
 const run= [false,true,false];
 const CreateForm = Form.create()(props => {
 
@@ -62,22 +62,12 @@ const CreateForm = Form.create()(props => {
       <FormItem key="eid" labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="选择异常设备">
         {form.getFieldDecorator('eid')(
           <Select style={{ width: '100%' }}>
-            <Option value="1">KD-33</Option>
-            <Option value="2">KD-34</Option>
-            <Option value="3">KD-35</Option>
-            {/* <Option value="4">KD-36</Option>
-            <Option value="5">KD-37</Option>
-            <Option value="6">KD-38</Option>
-            <Option value="7">KD-39</Option>
-            <Option value="8">KD-40</Option> */}
-            <Option value="4">BP-11</Option>
-            <Option value="5">BP-12</Option>
-            <Option value="6">BP-13</Option>
-{/*            <Option value="12">BP-14</Option>
-            <Option value="13">BP-15</Option>
-            <Option value="14">BP-16</Option>
-            <Option value="15">BP-17</Option>
-            <Option value="16">BP-18</Option>  */}
+            <Option value="1">KD-36</Option>
+            <Option value="2">KD-43</Option>
+            <Option value="3">KD-44</Option>
+            <Option value="4">KD-47</Option>
+            <Option value="5">KD-48</Option>
+            <Option value="6">KD-39</Option>
           </Select>
         )}
       </FormItem>
@@ -188,9 +178,11 @@ class UpdateEquipmentForm extends PureComponent {
   }
 }
 /* eslint react/no-multi-comp:0 */
-@connect(({ errorsetting, loading }) => ({
+@connect(({ errorsetting,editerrors, loading }) => ({
   errorsetting,
-  loading: loading.models.errorsetting,
+  editerrors,
+  loading2: loading.models.errorsetting,
+  loading1: loading.models.editerrors,
 }))
 @Form.create()
 class TableList extends PureComponent {
@@ -199,24 +191,69 @@ class TableList extends PureComponent {
     equipmentmodalVisible: false,
     expandForm: false,
     selectedRows: [],
+    selectedRows1: [],
     formValues: {},
     equipmentFormValues: {},
   };
 
-  columns = [
+  columns1 = [
+    {
+      title: '故障编号',
+      dataIndex: 'id',
+      width:90,
+      fixed: 'left',
+    },
+    {
+      title: '故障种类',
+      dataIndex: 'type',
+      width:90,
+    },
+    {
+      title: '故障描述',
+      dataIndex: 'desc',
+      width:400,
+    },
+    {
+      title: '故障原因',
+      dataIndex: 'reason',
+      width:400,
+    },
+    {
+      title: '解决策略',
+      dataIndex: 'solution',
+      width:600,
+    },
+    {
+      title: '录入时间',
+      dataIndex: 'date',
+      width:150,
+    },
+    ];
+
+  columns2 = [
     {
       title: '设备名',
       dataIndex: 'eid',
+      width:90,
+      fixed:'left',
       sorter:true,
       render: val => <span>{eid[val]}</span>,
     },
     {
+      title: '报警号',
+      dataIndex: 'errorid',
+      width:90,
+      fixed: 'left',
+    },
+    {
       title: '异常描述',
       dataIndex: 'desc',
+      width:500,
     },
     {
       title: '异常种类',
       dataIndex: 'type',
+      width:120,
       filters: [
         {
           text: type1[0],
@@ -226,14 +263,24 @@ class TableList extends PureComponent {
           text: type1[1],
           value: 1,
         },
+        {
+          text: type1[2],
+          value: 2,
+        },
       ],
       render(val) {
         return <span>{type1[val]} </span>;
       },
     },
     {
+      title: '处理措施',
+      dataIndex: 'solution',
+      width:500,
+    },
+    {
       title: '异常时间',
       dataIndex: 'error',
+      width:150,
       sorter:true,
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
@@ -248,6 +295,8 @@ class TableList extends PureComponent {
     {
       title: '解决状态',
       dataIndex: 'status',
+      width:150,
+      fixed:'right',
       filters: [
         {
           text: status[0],
@@ -268,9 +317,11 @@ class TableList extends PureComponent {
     },
     {
       title: '操作',
+      width:90,
+      fixed:'right',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleUpdateEquipmentVisible(true, record)}>设置</a>
+          <a onClick={() => this.handleUpdateEquipmentVisible(true, record)}>处理</a>
         </Fragment>
       ),
     },
@@ -280,6 +331,9 @@ class TableList extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'errorsetting/fetch',
+    });
+    dispatch({
+      type: 'editerrors/fetch',
     });
   }
 
@@ -324,6 +378,17 @@ class TableList extends PureComponent {
       payload: {},
     });
   };
+  handleFormReset1 = () => {
+    const { form, dispatch } = this.props;
+    form.resetFields();
+    this.setState({
+      formValues: {},
+    });
+    dispatch({
+      type: 'editerrors/fetch',
+      payload: {},
+    });
+  };
 
   toggleForm = () => {
     const { expandForm } = this.state;
@@ -356,7 +421,36 @@ class TableList extends PureComponent {
     });
   };
 
-  handleSearch = e => {
+  handleSelectRows1 = rows => {
+    this.setState({
+      selectedRows1: rows,
+    });
+  };
+
+  handleSearch1 = e => {
+    e.preventDefault();
+
+    const { dispatch, form } = this.props;
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      const values = {
+        ...fieldsValue,
+      };
+
+      this.setState({
+        formValues: values,
+      });
+
+      dispatch({
+        type: 'editerrors/fetch',
+        payload: values,
+      });
+    });
+  };
+
+  handleSearch2 = e => {
     e.preventDefault();
 
     const { dispatch, form } = this.props;
@@ -419,28 +513,90 @@ class TableList extends PureComponent {
         errorid: fields.errorid,
         error: fields.error,
       },
+      callback: (response) => {
+        if (response.error==='NotFoundERRORID') {
+          message.error('添加失败，故障代码不存在！！！！')
+        } else {
+          message.success('添加成功')
+        }
+      }
     });
-
-    message.success('添加成功');
     this.handleModalVisible();
   };
 
 
-  renderSimpleForm() {
+  renderSimpleForm1() {
     const {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form onSubmit={this.handleSearch1} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="设备异常描述">
-              {getFieldDecorator('desc')(<Input placeholder="请输入" />)}
+            <FormItem label="故障代码">
+              {getFieldDecorator('id')(<Input placeholder="请输入(不知道可不填)" />)}
+            </FormItem>
+            <FormItem label="故障类型">
+              {getFieldDecorator('typesearch')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Option value="机械故障">机械故障</Option>
+                  <Option value="电气故障">电气故障</Option>
+                  <Option value="其他">其他</Option>
+                </Select>
+              )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="处理状态">
-              {getFieldDecorator('status')(
+            <FormItem label="故障信息描述关键词1">
+              {getFieldDecorator('desc1')(<Input placeholder="请输入" />)}
+            </FormItem>
+            <FormItem label="故障信息描述关键词2">
+              {getFieldDecorator('desc2')(<Input placeholder="请输入(可不填)" />)}
+            </FormItem>
+          </Col>
+
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset1}>
+                重置
+              </Button>
+              {/*  <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                展开 <Icon type="down" />
+              </a> */}
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
+  renderSimpleForm2() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Form onSubmit={this.handleSearch2} layout="inline">
+        <Row gutter={{ md: 12, lg: 24, xl: 48 }}>
+          <Col md={8} sm={12}>
+            <FormItem key="eid" labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="选择异常设备">
+              {getFieldDecorator('eid')(
+                <Select style={{ width: '100%' }}>
+                  <Option value="1">KD-36</Option>
+                  <Option value="2">KD-43</Option>
+                  <Option value="3">KD-44</Option>
+                  <Option value="4">KD-47</Option>
+                  <Option value="5">KD-48</Option>
+                  <Option value="6">KD-42</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={12}>
+            <FormItem label="异常处理状态">
+              {getFieldDecorator('statussearch')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="0">异常未解决</Option>
                   <Option value="1">已解决</Option>
@@ -449,7 +605,7 @@ class TableList extends PureComponent {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col md={8} sm={12}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
@@ -467,19 +623,26 @@ class TableList extends PureComponent {
     );
   }
 
-
-  renderForm() {
+  renderForm1() {
     const { expandForm } = this.state;
     // return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
-    return expandForm ? this.renderSimpleForm(): this.renderSimpleForm();
+    return expandForm ? this.renderSimpleForm1(): this.renderSimpleForm1();
+  }
+
+  renderForm2() {
+    const { expandForm } = this.state;
+    // return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+    return expandForm ? this.renderSimpleForm2(): this.renderSimpleForm2();
   }
 
   render() {
     const {
-      errorsetting: { data },
-      loading,
+      editerrors: { data1 },
+      loading1,
+      errorsetting: { data2 },
+      loading2,
     } = this.props;
-    const { selectedRows, modalVisible, equipmentmodalVisible,equipmentFormValues } = this.state;
+    const { selectedRows, selectedRows1, modalVisible, equipmentmodalVisible,equipmentFormValues } = this.state;
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -490,32 +653,50 @@ class TableList extends PureComponent {
       handleUpdateEquipment: this.handleUpdateEquipment,
     };
     return (
-      <PageHeaderWrapper title="异常管理">
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
-              {selectedRows.length > 0 && (
+      <PageHeaderWrapper title="故障记录与管理">
+        <Row>
+          <Card bordered={false}>
+            <div className={styles.tableList}>
+              <div className={styles.tableListForm}>{this.renderForm1()}</div>
+              <StandardTable
+                scroll={{x:1872, y: 200 }}
+                selectedRows={selectedRows1}
+                loading={loading1}
+                onSelectRow={this.handleSelectRows1}
+                data={data1}
+                columns={this.columns1}
+              />
+            </div>
+          </Card>
+        </Row>
+        <Row style={{paddingTop:'24px'}}>
+          <Card bordered={false}>
+            <div className={styles.tableList}>
+              <div className={styles.tableListForm}>{this.renderForm2()}</div>
+              <div className={styles.tableListOperator}>
+                <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+                  新建
+                </Button>
+                {selectedRows.length > 0 && (
                 <span>
                   <Button icon="delete" type="primary" onClick={() => this.handleMenuClick()}>
                     删除
                   </Button>
                 </span>
-              )}
+                )}
+              </div>
+              <StandardTable
+                scroll={{x:1400, y:1000}}
+                selectedRows={selectedRows}
+                loading={loading2}
+                data={data2}
+                columns={this.columns2}
+                onSelectRow={this.handleSelectRows}
+                onChange={this.handleStandardTableChange}
+              />
             </div>
-            <StandardTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              columns={this.columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
-          </div>
-        </Card>
+          </Card>
+        </Row>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
         {equipmentFormValues && Object.keys(equipmentFormValues).length ? (
           <UpdateEquipmentForm

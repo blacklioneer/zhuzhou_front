@@ -1,0 +1,2 @@
+\src\components\Charts\AsyncLoadBizCharts.js 修改了CDN请求为指定地址指定文件
+\src\defaultSettings.js 修改iconfontURL路径为指定地址指定文件

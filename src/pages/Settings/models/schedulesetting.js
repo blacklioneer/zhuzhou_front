@@ -1,4 +1,4 @@
-import { queryPlanning, removePlanning, addPlanning, updatePlanning,updatePlanningEquipment } from '@/services/api';
+import { queryPlanning,getUnFinished,getClear,removePlanning, addPlanning, updatePlanning,updatePlanningEquipment } from '@/services/api';
 
 export default {
   namespace: 'schedulesetting',
@@ -17,6 +17,23 @@ export default {
         type: 'save',
         payload: response,
       });
+    },
+    *getunfinished({ payload,callback }, { call, put }) {
+      const response = yield call(getUnFinished, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback(response);
+    },
+
+    *cleardata({ payload,callback }, { call, put }) {
+      const response = yield call(getClear, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback();
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(addPlanning, payload);
@@ -48,7 +65,7 @@ export default {
         type: 'save',
         payload: response,
       });
-      if (callback) callback();
+      if (callback) callback(response);
     },
   },
 

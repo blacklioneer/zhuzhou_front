@@ -5,6 +5,7 @@ import kdmc from '../../assets/kdmc.png'
 import bpmc from '../../assets/bpmc.png'
 import equipmentmanager from '../../assets/equipmentmanager.png'
 import linemanager from '../../assets/linemanager.png'
+
 import ShowTime from './ShowTime'
 const status=['运行','待机','故障','关机'];
 const statuscss=[styles.statustextsecondery_run,styles.statustextsecondery_pause,styles.statustextsecondery_error,styles.statustextsecondery_offline]
@@ -26,60 +27,57 @@ const ProductLayout = memo(({data})=>(
         >
           <table>
             <tr>
-              <td><img alt="example" src={bpmc} className={styles.backgroundpic} /></td>
+              <td><img alt="example" src={kdmc} className={styles.backgroundpic} /></td>
               <td>
-                <tr className={styles.textprimarycolor}>bpx-11</tr>
-                <tr className={`${statuscss[data[3].e]}`}>{status[data[3].e]}</tr>
-                <tr className={`${statuscss[data[3].m]}`}>{status[data[3].m]}</tr>
-                <tr className={styles.textprimarycolor}>{data[3].p}</tr>
-              </td>
-              <td>
-                <tr className={styles.textprimarycolor}>{data[3].o}</tr>
-                <tr className={styles.textprimarycolor}>%</tr>
-              </td>
-            </tr>
-          </table>
-        </Card>
-      </Col>
-      <Col span={8}>
-        <Card
-          className={styles.layoutcard}
-          bordered={false}
-        >
-          <table>
-            <tr>
-              <td><img alt="example" src={bpmc} className={styles.backgroundpic} /></td>
-              <td>
-                <tr className={styles.textprimarycolor}>bpx-12</tr>
-                <tr className={`${statuscss[data[4].e]}`}>{status[data[4].e]}</tr>
-                <tr className={`${statuscss[data[4].m]}`}>{status[data[4].m]}</tr>
-                <tr className={styles.textprimarycolor}>{data[4].p}</tr>
-              </td>
-              <td>
-                <tr className={styles.textprimarycolor}>{data[4].o}</tr>
-                <tr className={styles.textprimarycolor}>%</tr>
-              </td>
-            </tr>
-          </table>
-        </Card>
-      </Col>
-      <Col span={8}>
-        <Card
-          className={styles.layoutcard}
-          bordered={false}
-        >
-          <table>
-            <tr>
-              <td><img alt="example" src={bpmc} className={styles.backgroundpic} /></td>
-              <td>
-                <tr className={styles.textprimarycolor}>bpx-13</tr>
+                <tr className={styles.textprimarycolor}>KD-42</tr>
                 <tr className={`${statuscss[data[5].e]}`}>{status[data[5].e]}</tr>
                 <tr className={`${statuscss[data[5].m]}`}>{status[data[5].m]}</tr>
                 <tr className={styles.textprimarycolor}>{data[5].p}</tr>
               </td>
               <td>
-                <tr className={styles.textprimarycolor}>{data[5].o}</tr>
-                <tr className={styles.textprimarycolor}>%</tr>
+                <tr className={styles.textprimarycolor}>{data[5].o}%</tr>
+              </td>
+            </tr>
+          </table>
+        </Card>
+      </Col>
+      <Col span={8}>
+        <Card
+          className={styles.layoutcard}
+          bordered={false}
+        >
+          <table>
+            <tr>
+              <td><img alt="example" src={kdmc} className={styles.backgroundpic} /></td>
+              <td>
+                <tr className={styles.textprimarycolor}>KD-47</tr>
+                <tr className={`${statuscss[data[3].e]}`}>{status[data[3].e]}</tr>
+                <tr className={`${statuscss[data[3].m]}`}>{status[data[3].m]}</tr>
+                <tr className={styles.textprimarycolor}>{data[3].p}</tr>
+              </td>
+              <td>
+                <tr className={styles.textprimarycolor}>{data[3].o}%</tr>
+              </td>
+            </tr>
+          </table>
+        </Card>
+      </Col>
+      <Col span={8}>
+        <Card
+          className={styles.layoutcard}
+          bordered={false}
+        >
+          <table>
+            <tr>
+              <td><img alt="example" src={bpmc} className={styles.backgroundpic} /></td>
+              <td>
+                <tr className={styles.textprimarycolor}>KD-48</tr>
+                <tr className={`${statuscss[data[4].e]}`}>{status[data[4].e]}</tr>
+                <tr className={`${statuscss[data[4].m]}`}>{status[data[4].m]}</tr>
+                <tr className={styles.textprimarycolor}>{data[4].p}</tr>
+              </td>
+              <td>
+                <tr className={styles.textprimarycolor}>{data[4].o}%</tr>
               </td>
             </tr>
           </table>
@@ -99,14 +97,13 @@ const ProductLayout = memo(({data})=>(
             <tr>
               <td><img alt="example" src={kdmc} className={styles.backgroundpic} /></td>
               <td>
-                <tr className={styles.textprimarycolor}>kd-33</tr>
+                <tr className={styles.textprimarycolor}>KD-36</tr>
                 <tr className={`${statuscss[data[0].e]}`}>{status[data[0].e]}</tr>
                 <tr className={`${statuscss[data[0].m]}`}>{status[data[0].m]}</tr>
                 <tr className={styles.textprimarycolor}>{data[0].p}</tr>
               </td>
               <td>
-                <tr className={styles.textprimarycolor}>{data[0].o}</tr>
-                <tr className={styles.textprimarycolor}>%</tr>
+                <tr className={styles.textprimarycolor}>{data[0].o}%</tr>
               </td>
             </tr>
           </table>
@@ -121,14 +118,13 @@ const ProductLayout = memo(({data})=>(
             <tr>
               <td><img alt="example" src={kdmc} className={styles.backgroundpic} /></td>
               <td>
-                <tr className={styles.textprimarycolor}>kd-34</tr>
+                <tr className={styles.textprimarycolor}>KD-43</tr>
                 <tr className={`${statuscss[data[1].e]}`}>{status[data[1].e]}</tr>
                 <tr className={`${statuscss[data[1].m]}`}>{status[data[1].m]}</tr>
                 <tr className={styles.textprimarycolor}>{data[1].p}</tr>
               </td>
               <td>
-                <tr className={styles.textprimarycolor}>{data[1].o}</tr>
-                <tr className={styles.textprimarycolor}>%</tr>
+                <tr className={styles.textprimarycolor}>{data[1].o}%</tr>
               </td>
             </tr>
           </table>
@@ -141,16 +137,15 @@ const ProductLayout = memo(({data})=>(
         >
           <table>
             <tr>
-              <td><img alt="example" src={kdmc} className={styles.backgroundpic} /></td>
+              <td><img alt="example" src={bpmc} className={styles.backgroundpic} /></td>
               <td>
-                <tr className={styles.textprimarycolor}>kd-35</tr>
+                <tr className={styles.textprimarycolor}>KD-44</tr>
                 <tr className={`${statuscss[data[2].e]}`}>{status[data[2].e]}</tr>
                 <tr className={`${statuscss[data[2].m]}`}>{status[data[2].m]}</tr>
                 <tr className={styles.textprimarycolor}>{data[2].p}</tr>
               </td>
               <td>
-                <tr className={styles.textprimarycolor}>{data[2].o}</tr>
-                <tr className={styles.textprimarycolor}>%</tr>
+                <tr className={styles.textprimarycolor}>{data[2].o}%</tr>
               </td>
             </tr>
           </table>

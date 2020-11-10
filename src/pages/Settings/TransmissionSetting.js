@@ -185,7 +185,6 @@ class TableList extends PureComponent {
       title: '设备名',
       dataIndex: 'eid',
       sorter:true,
-      render: val => <span>{eid[val]}</span>,
     },
     {
       title: '订单剩余加工量',

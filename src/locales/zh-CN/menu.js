@@ -53,6 +53,10 @@ export default {
   'menu.setting.maintain': '保养管理',
   'menu.setting.transmission': '物料配送管理',
   'menu.setting.connect': '数控系统连接管理',
+  'menu.setting.errordatabasesetting': '故障信息库管理',
+  'menu.setting.errordatabasesetting.inputerrordatabase': '录入故障信息库',
+  'menu.setting.errordatabasesetting.machineerrordatabase': '机床报警信息库',
+  'menu.setting.errordatabasesetting.warningdatabase': '预警信息库',
 
 
 

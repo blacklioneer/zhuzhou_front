@@ -135,7 +135,7 @@ class HeaderView extends Component {
           this.setState({
             visible: true,
           });
-        } else if(visible && x >600 && y <200) {
+        } else if(visible && x >600 && y <900) {
           this.setState({
             visible: true,
           });

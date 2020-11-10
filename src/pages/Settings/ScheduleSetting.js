@@ -28,6 +28,7 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './User.less';
+import Authorized from '@/utils/Authorized';
 
 
 const FormItem = Form.Item;
@@ -39,10 +40,10 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['default', 'success',];
-const status = ['未加工', '正在加工', ];
+const statusMap = ['default', 'success','warning'];
+const status = ['待加工', '正在加工','完工' ];
 // const eid= ['','KD-33','KD-34','KD-35','KD-36','KD-37','KD-38','KD-39','KD-40','BP-11','BP-12','BP-13','BP-14','BP-15','BP-16','BP-17','BP-18'];
-const eid= ['','KD-33','KD-34','KD-35','BP-11','BP-12','BP-13'];
+const eid= ['','KD-36','KD-43','KD-44','KD-47','KD-48','KD-39'];
 const run = [false,true];
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
@@ -68,6 +69,46 @@ const CreateForm = Form.create()(props => {
   );
 });
 
+const ClearForm = Form.create()(props => {
+  const { clearModalVisible, form, handleClear, handleClearModalVisible } = props;
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      handleClear(fieldsValue);
+    });
+  };
+  return (
+    <Modal
+      destroyOnClose
+      title="订单清理"
+      visible={clearModalVisible}
+      onOk={okHandle}
+      onCancel={() => handleClearModalVisible()}
+    >
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="起始时间">
+        {form.getFieldDecorator('startdate')(
+          <DatePicker
+            style={{ width: '100%' }}
+            showTime
+            format="YYYY-MM-DD"
+            placeholder="选择起始时间"
+          />
+        )}
+      </FormItem>
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="截止时间">
+        {form.getFieldDecorator('finisheddate')(
+          <DatePicker
+            style={{ width: '100%' }}
+            showTime
+            format="YYYY-MM-DD"
+            placeholder="选择结束时间"
+          />
+        )}
+      </FormItem>
+    </Modal>
+  );
+});
 
 @Form.create()
 class UpdateForm extends PureComponent {
@@ -82,7 +123,6 @@ class UpdateForm extends PureComponent {
 
     this.state = {
       formVals: {
-        id: props.values.id,
         eid: props.values.eid,
         suppliesnum: props.values.suppliesnum,
         order: props.values.order,
@@ -90,6 +130,8 @@ class UpdateForm extends PureComponent {
         date:props.values.date,
         unqualified:props.values.unqualified,
         technologytime:props.values.technologytime,
+        stepnum:props.values.stepnum,
+        stepname:props.values.stepname,
       },
       currentStep: 0,
     };
@@ -144,17 +186,17 @@ class UpdateForm extends PureComponent {
             initialValue: eid[formVals.eid],
           })(
             <Select style={{ width: '100%' }}>
-              <Option value="1">KD-33</Option>
-              <Option value="2">KD-34</Option>
-              <Option value="3">KD-35</Option>
+              <Option value="1">KD-36</Option>
+              <Option value="2">KD-43</Option>
+              <Option value="3">KD-44</Option>
               {/* <Option value="4">KD-36</Option>
             <Option value="5">KD-37</Option>
             <Option value="6">KD-38</Option>
             <Option value="7">KD-39</Option>
             <Option value="8">KD-40</Option> */}
-              <Option value="4">BP-11</Option>
-              <Option value="5">BP-12</Option>
-              <Option value="6">BP-13</Option>
+              <Option value="4">KD-47</Option>
+              <Option value="5">KD-48</Option>
+              <Option value="6">KD-39</Option>
               {/*            <Option value="12">BP-14</Option>
             <Option value="13">BP-15</Option>
             <Option value="14">BP-16</Option>
@@ -167,13 +209,13 @@ class UpdateForm extends PureComponent {
     }
     if (currentStep === 2) {
       return [
-        <FormItem key="time" {...this.formLayout} label="计划加工时间">
+        <FormItem key="time" {...this.formLayout} label="排产时间">
           {form.getFieldDecorator('date')(
             <DatePicker
               style={{ width: '100%' }}
               showTime
               format="YYYY-MM-DD"
-              placeholder="选择加工时间(不输入保留原时间)"
+              placeholder="选择排产时间(不输入保留原时间)"
             />
           )}
         </FormItem>,
@@ -183,49 +225,24 @@ class UpdateForm extends PureComponent {
       return [
         <FormItem key="technologytime_m" {...this.formLayout} label="分钟">
           {form.getFieldDecorator('technologytime_m')(
-            <Row>
-{/*              <Col span={12}>
-                <Slider
-                  min={0}
-                  max={60}
-                />
-              </Col> */}
-              <Col span={12}>
-                <InputNumber
-                  min={0}
-                  style={{ marginLeft: 16 }}
-                />
-              </Col>
-            </Row>
+            <InputNumber
+              min={0}
+              style={{ marginLeft: 16 }}
+            />
           )}
         </FormItem>,
         <FormItem key="technologytime_s" {...this.formLayout} label="秒">
           {form.getFieldDecorator('technologytime_s')(
-            <Row>
-              {/* <Col span={12}>
-                <Slider
-                  min={0}
-                  max={60}
-                />
-              </Col> */}
-              <Col span={12}>
-                <InputNumber
-                  min={0}
-                  max={60}
-                  style={{ marginLeft: 16 }}
-                />
-              </Col>
-            </Row>
+            <InputNumber
+              min={0}
+              max={60}
+              style={{ marginLeft: 16 }}
+            />
           )}
         </FormItem>,
       ];
     }
     return [
-      <FormItem key="ordernum" {...this.formLayout} label="订单号">
-        {form.getFieldDecorator('ordernum', {
-          initialValue: formVals.ordernum,
-        })(<Input placeholder="请输入" />)}
-      </FormItem>,
       <FormItem key="supplies" {...this.formLayout} label="物料号">
         {form.getFieldDecorator('suppliesnum',{
           initialValue: formVals.suppliesnum,
@@ -238,13 +255,23 @@ class UpdateForm extends PureComponent {
           initialValue: formVals.order,
         })(<Input placeholder="请输入" />)}
       </FormItem>,
-      <FormItem key="finished" {...this.formLayout} label="完成量修正">
+      <FormItem key="finished" {...this.formLayout} label="完成量">
         {form.getFieldDecorator('finished')
         (<Input placeholder="若完成量有误请输入" />)}
       </FormItem>,
       <FormItem key="unqualified" {...this.formLayout} label="不合格量">
         {form.getFieldDecorator('unqualified', {
           initialValue: formVals.unqualified,
+        })(<Input placeholder="请输入" />)}
+      </FormItem>,
+      <FormItem key="stepnum" {...this.formLayout} label="工序号">
+        {form.getFieldDecorator('stepnum', {
+          initialValue: formVals.stepnum,
+        })(<Input placeholder="请输入" />)}
+      </FormItem>,
+      <FormItem key="stepname" {...this.formLayout} label="工序名称">
+        {form.getFieldDecorator('stepname', {
+          initialValue: formVals.stepname,
         })(<Input placeholder="请输入" />)}
       </FormItem>,
     ];
@@ -319,7 +346,7 @@ class UpdateForm extends PureComponent {
         <Steps style={{ marginBottom: 28 }} size="small" current={currentStep}>
           <Step title="输入订单信息" />
           <Step title="配置加工设备" />
-          <Step title="设定加工时间" />
+          <Step title="设定排产日期" />
           <Step title="设定工艺时间" />
         </Steps>
         {this.renderContent(currentStep, formVals)}
@@ -343,7 +370,7 @@ class UpdateEquipmentForm extends PureComponent {
     this.state = {
       formVals: {
         eid: props.values.eid,
-        id: props.values.id,
+        ordernum: props.values.ordernum,
         status: props.values.status,
       },
     };
@@ -415,6 +442,9 @@ class UpdateEquipmentForm extends PureComponent {
     );
   }
 }
+
+
+
 /* eslint react/no-multi-comp:0 */
 @connect(({ schedulesetting, loading }) => ({
   schedulesetting,
@@ -424,6 +454,7 @@ class UpdateEquipmentForm extends PureComponent {
 class TableList extends PureComponent {
   state = {
     modalVisible: false,
+    clearModalVisible: false,
     equipmentmodalVisible: false,
     updateModalVisible: false,
     expandForm: false,
@@ -453,19 +484,34 @@ class TableList extends PureComponent {
       dataIndex: 'finished',
     },
     {
+      title: '工序号',
+      dataIndex: 'stepnum',
+    },
+    {
+      title: '工序名称',
+      dataIndex: 'stepname',
+    },
+    {
       title: '不合格量',
       dataIndex: 'unqualified',
     },
     {
       title: '工艺时间',
       dataIndex: 'technologytime',
-      render: val => <span>{parseInt(val/60000,10)}m{Math.round(val%60000)/1000}s</span>,
+      // render: val => <span>{parseInt(val/60000,10)}m{Math.round(val%60000)/1000}s</span>,  毫秒
+      render: val => <span>{parseInt(val/60,10)}m{Math.round(val%60)}s</span>
     },
     {
-      title: '排产日期',
+      title: '完工日期',
       dataIndex: 'date',
       sorter: true,
-      render: val => <span>{moment(val).format('YYYY-MM-DD')}</span>,
+      render: val => <span>{moment(val).format('YYYY-MM-DD hh:mm:ss')}</span>,
+    },
+    {
+      title: '计划完成日期',
+      dataIndex: 'finisheddate',
+      sorter: true,
+      render: val => <span>{moment(val).format('YYYY-MM-DD ')}</span>,
     },
     {
       title: '加工设备',
@@ -474,18 +520,8 @@ class TableList extends PureComponent {
       render: val => <span>{eid[val]}</span>,
     },
     {
-      title: '排产',
+      title: '订单状态',
       dataIndex: 'status',
-      filters: [
-        {
-          text: status[0],
-          value: 0,
-        },
-        {
-          text: status[1],
-          value: 1,
-        },
-      ],
       render(val) {
         return <Badge status={statusMap[val]} text={status[val]} />;
       },
@@ -549,6 +585,30 @@ class TableList extends PureComponent {
     });
   };
 
+  handleGetUnFinished = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'schedulesetting/getunfinished',
+      payload: {},
+      callback: (response) => {
+        if (response.error) {
+          message.error(`获取失败，故障原因：${response.error}`);
+        }
+        else{
+          message.success('获取成功');
+        }
+      }
+    });
+  };
+
+  handleGetFinished = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'schedulesetting/getfinished',
+      payload: {},
+    });
+  };
+
   toggleForm = () => {
     const { expandForm } = this.state;
     this.setState({
@@ -564,7 +624,7 @@ class TableList extends PureComponent {
       dispatch({
         type: 'schedulesetting/remove',
         payload: {
-          id: selectedRows.map(row => row.id),
+          ordernum: selectedRows.map(row => row.ordernum),
         },
         callback: () => {
           this.setState({
@@ -616,6 +676,12 @@ class TableList extends PureComponent {
     });
   };
 
+  handleClearModalVisible = (flag) => {
+    this.setState({
+      clearModalVisible: !!flag,
+    });
+  };
+
 
   handleUpdateEquipmentVisible = (flag, record) => {
     this.setState({
@@ -637,6 +703,18 @@ class TableList extends PureComponent {
     this.handleModalVisible();
   };
 
+  handleClear = fields => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'schedulesetting/cleardata',
+      payload: {
+          startdate: fields.startdate,
+          finisheddate: fields.finisheddate,
+      },
+    });
+    this.handleClearModalVisible();
+  };
+
   handleUpdateEquipment = fields => {
     const { dispatch } = this.props;
     const { formValues } = this.state;
@@ -645,14 +723,20 @@ class TableList extends PureComponent {
       payload: {
         query: formValues,
         body: {
-          id: fields.id,
+          ordernum: fields.ordernum,
           eid: fields.eid,
           status: fields.status,
         },
       },
+      callback: (response) => {
+        if (response.error==='AlreadyFinished') {
+          message.error(`开始失败，订单${response.order}已经完成`);
+        }
+        else{
+          message.success('配置成功');
+        }
+      }
     });
-
-    message.success('配置成功');
     this.handleUpdateEquipmentVisible();
   };
 
@@ -665,12 +749,13 @@ class TableList extends PureComponent {
       payload: {
         query: formValues,
         body: {
-          id: fields.id,
           eid: fields.eid,
           suppliesnum: fields.suppliesnum,
           order: fields.order,
           ordernum: fields.ordernum,
           date:fields.date,
+          stepnum:fields.stepnum,
+          stepname:fields.stepname,
           unqualified:fields.unqualified,
           finished:fields.finished,
           technologytime_m:fields.technologytime_m,
@@ -699,8 +784,9 @@ class TableList extends PureComponent {
             <FormItem label="加工状态">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">未加工</Option>
+                  <Option value="0">待加工</Option>
                   <Option value="1">正在加工</Option>
+                  <Option value="2">完工</Option>
                 </Select>
               )}
             </FormItem>
@@ -713,9 +799,6 @@ class TableList extends PureComponent {
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
-            {/*  <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down" />
-              </a> */}
             </span>
           </Col>
         </Row>
@@ -736,7 +819,14 @@ class TableList extends PureComponent {
       schedulesetting: { data },
       loading,
     } = this.props;
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues,equipmentmodalVisible,equipmentFormValues } = this.state;
+    const { selectedRows,
+      modalVisible,
+      updateModalVisible,
+      stepFormValues,
+      equipmentmodalVisible,
+      clearModalVisible,
+      equipmentFormValues
+    } = this.state;
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -745,6 +835,10 @@ class TableList extends PureComponent {
     const updateMethods = {
       handleUpdateModalVisible: this.handleUpdateModalVisible,
       handleUpdate: this.handleUpdate,
+    };
+    const clearMethods = {
+      handleClearModalVisible: this.handleClearModalVisible,
+      handleClear: this.handleClear,
     };
     const updateEquipmentMethods = {
       handleUpdateEquipmentVisible: this.handleUpdateEquipmentVisible,
@@ -761,11 +855,20 @@ class TableList extends PureComponent {
               </Button>
               {selectedRows.length > 0 && (
                 <span>
-                  <Button icon="delete" type="primary" onClick={() => this.handleMenuClick()}>
-                    删除
-                  </Button>
+                  <Authorized authority={['user','admin']}>
+                    <Button icon="delete" type="primary" onClick={() => this.handleMenuClick()}>
+                      删除
+                    </Button>
+                  </Authorized>
                 </span>
+
               )}
+              <Button icon="download" type="primary" style={{ marginLeft: 8 }} onClick={this.handleGetUnFinished}>
+                获取订单信息
+              </Button>
+              <Button icon="clear" type="primary" style={{ marginLeft: 8 }} onClick={this.handleClearModalVisible}>
+                清理数据
+              </Button>
             </div>
             <StandardTable
               selectedRows={selectedRows}
@@ -792,6 +895,10 @@ class TableList extends PureComponent {
             values={equipmentFormValues}
           />
         ) : null}
+        <ClearForm
+          {...clearMethods}
+          clearModalVisible={clearModalVisible}
+        />
       </PageHeaderWrapper>
     );
   }
