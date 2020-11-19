@@ -29,7 +29,7 @@ const ProductLayout = memo(({data})=>(
             <tr>
               <td><img alt="example" src={kdmc} className={styles.backgroundpic} /></td>
               <td>
-                <tr className={styles.textprimarycolor}>KD-42</tr>
+                <tr className={styles.textprimarycolor}>KD-39</tr>
                 <tr className={`${statuscss[data[5].e]}`}>{status[data[5].e]}</tr>
                 <tr className={`${statuscss[data[5].m]}`}>{status[data[5].m]}</tr>
                 <tr className={styles.textprimarycolor}>{data[5].p}</tr>
